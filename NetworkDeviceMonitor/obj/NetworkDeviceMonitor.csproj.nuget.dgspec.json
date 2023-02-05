@@ -1,0 +1,141 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor\\NetworkDeviceMonitor.csproj": {}
+  },
+  "projects": {
+    "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\NetworkDeviceMonitor.Lib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\NetworkDeviceMonitor.Lib.csproj",
+        "projectName": "NetworkDeviceMonitor.Lib",
+        "projectPath": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\NetworkDeviceMonitor.Lib.csproj",
+        "packagesPath": "C:\\Users\\satheesh.krishnasamy\\.nuget\\packages\\",
+        "outputPath": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\satheesh.krishnasamy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor\\NetworkDeviceMonitor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor\\NetworkDeviceMonitor.csproj",
+        "projectName": "NetworkDeviceMonitor",
+        "projectPath": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor\\NetworkDeviceMonitor.csproj",
+        "packagesPath": "C:\\Users\\satheesh.krishnasamy\\.nuget\\packages\\",
+        "outputPath": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\satheesh.krishnasamy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows",
+            "projectReferences": {
+              "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\NetworkDeviceMonitor.Lib.csproj": {
+                "projectPath": "D:\\satheesh\\MyCode\\NetworkDeviceMonitor\\NetworkDeviceMonitor.Lib\\NetworkDeviceMonitor.Lib.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

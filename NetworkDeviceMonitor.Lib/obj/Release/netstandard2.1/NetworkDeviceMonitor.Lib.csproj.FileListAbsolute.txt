@@ -1,0 +1,10 @@
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\bin\Release\netstandard2.1\NetworkDeviceMonitor.Lib.deps.json
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\bin\Release\netstandard2.1\NetworkDeviceMonitor.Lib.dll
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\bin\Release\netstandard2.1\NetworkDeviceMonitor.Lib.pdb
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.csproj.AssemblyReference.cache
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.GeneratedMSBuildEditorConfig.editorconfig
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.AssemblyInfoInputs.cache
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.AssemblyInfo.cs
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.csproj.CoreCompileInputs.cache
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.dll
+D:\satheesh\MyCode\NetworkDeviceMonitor\NetworkDeviceMonitor.Lib\obj\Release\netstandard2.1\NetworkDeviceMonitor.Lib.pdb
