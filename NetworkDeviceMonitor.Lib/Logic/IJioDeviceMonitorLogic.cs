@@ -7,6 +7,6 @@ namespace NetworkDeviceMonitor.Lib.Logic
     {
         Task<StDevResponseRoot> GetDeviceDetailsAsync();
 
-        OnNotifications NotificationEvent { get; set; }
+        OnNotificationsEvent NotificationEvent { get; set; }
     }
 }

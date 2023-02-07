@@ -13,7 +13,6 @@ using System.Xml.Serialization;
 namespace NetworkDeviceMonitor.Lib.Logic
 {
 
-    public delegate void OnNotifications(IReadOnlyDictionary<string, string> notifications);
 
     public class JioDeviceMonitorLogic : IJioDeviceMonitorLogic, IDisposable
     {
@@ -23,7 +22,7 @@ namespace NetworkDeviceMonitor.Lib.Logic
         private readonly Timer timer;
         const string jioDeviceStatusUrlFormat = "http://jiofi.local.html/st_dev.w.xml?_={0}";
 
-        public OnNotifications NotificationEvent { get; set; }
+        public OnNotificationsEvent NotificationEvent { get; set; }
 
         public JioDeviceMonitorLogic(HttpClient httpClient, INotificationConfig config)
         {
@@ -36,12 +35,10 @@ namespace NetworkDeviceMonitor.Lib.Logic
         private async void StatusCheckTimer_OnTimeoutAsync(object state)
         {
             var notifications = GetNotifications().GetAwaiter().GetResult();
-            if (notifications != null && notifications.Count > 0)
+            if (notifications != null
+                && NotificationEvent != null)
             {
-                if (NotificationEvent != null)
-                {
-                    NotificationEvent(notifications);
-                }
+                NotificationEvent(notifications);
             }
 
             StarDeviceMonitor();
@@ -80,13 +77,17 @@ namespace NetworkDeviceMonitor.Lib.Logic
             }
         }
 
-        public async Task<IReadOnlyDictionary<string, string>> GetNotifications()
+        public async Task<NotificationModel> GetNotifications()
         {
             var deviceStatus = await this.GetDeviceDetailsAsync();
             var notifications = new Dictionary<string, string>();
+            BatteryStatus batteryStatus = BatteryStatus.NoBattery;
+            var info = new Dictionary<string, string>();
+
+
             if (deviceStatus != null)
             {
-                var batteryStatus = ParseBatteryStatus(deviceStatus.Batt_st);
+                batteryStatus = ParseBatteryStatus(deviceStatus.Batt_st);
                 if (deviceStatus.BatteryPercentage < this.config.LowBatteryPercentage
                     && batteryStatus == BatteryStatus.Discharging)
                 {
@@ -97,9 +98,13 @@ namespace NetworkDeviceMonitor.Lib.Logic
                 {
                     notifications.Add("Battery is full. Disconnect charger.", deviceStatus.BatteryPercentage.ToString() + "%");
                 }
+
+                info.Add("Device phone#", deviceStatus.Msisdn);
+                info.Add("Battery status", Enum.GetName(typeof(BatteryStatus), batteryStatus));
+                info.Add("Battery %", deviceStatus.BatteryPercentage.ToString());
             }
 
-            return new ReadOnlyDictionary<string, string>(notifications);
+            return new NotificationModel(notifications, batteryStatus == BatteryStatus.Charging, info);
         }
 
         private BatteryStatus ParseBatteryStatus(int batteryStatus)

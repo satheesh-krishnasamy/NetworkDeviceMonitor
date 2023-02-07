@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using NetworkDeviceMonitor.Lib.Config;
 using NetworkDeviceMonitor.Lib.Logic;
+using NetworkDeviceMonitor.Lib.Model;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -11,8 +12,10 @@ namespace NetworkDeviceMonitor
     {
         private readonly JioDeviceMonitorLogic deviceMonitor;
         private bool userForcedClose = false;
+        private bool isShownAutomatically = false;
 
-        private delegate void NotificationHandler(IReadOnlyDictionary<string, string> notifications);
+
+        private delegate void NotificationHandler(NotificationModel notifications);
 
         public NetworkDevice(IConfiguration config)
         {
@@ -23,10 +26,12 @@ namespace NetworkDeviceMonitor
             this.deviceMonitor.StarDeviceMonitor();
         }
 
-        private void OnDeviceNotifications(IReadOnlyDictionary<string, string> notifications)
+        private void OnDeviceNotifications(NotificationModel notifications)
         {
-            if (notifications == null || notifications.Count < 1)
-                return;
+            //if (notifications == null || (notifications.Notifications.Count < 1 && !notifications.IsCharging))
+            //{
+            //    return;
+            //}
 
             if (this.InvokeRequired)
             {
@@ -38,16 +43,51 @@ namespace NetworkDeviceMonitor
             }
         }
 
-        private void ShowAppInNormalWindowSize(IReadOnlyDictionary<string, string> notifications)
+        private void ShowAppInNormalWindowSize(NotificationModel notificationsResult)
         {
-            string notificationText = FormNotificationText(notifications);
+            if (notificationsResult == null)
+            {
+                this.Show();
+                this.Focus();
+                this.WindowState = FormWindowState.Normal;
+                this.ShowInTaskbar = true;
+                this.isShownAutomatically = false;
+                return;
+            }
 
+            if (notificationsResult.Notifications == null ||
+                notificationsResult.Notifications.Count < 1 ||
+                notificationsResult.IsCharging)
+            {
+                // If there is no notifications and the device
+                // is getting charged then minimize the window automatically.
+                if (isShownAutomatically)
+                    MinimizeWindow();
 
-            txtNotificationTextBox.Text = notificationText.ToString();
+                txtNotificationTextBox.ForeColor = Color.Black;
+                txtNotificationTextBox.Text = FormNotificationText(notificationsResult.Information);
+
+                isShownAutomatically = false;
+                return;
+            }
+
+            string displayText = FormNotificationText(notificationsResult.Notifications) +
+                Environment.NewLine +
+                FormNotificationText(notificationsResult.Information);
+
+            if (txtNotificationTextBox.Text != null
+                && txtNotificationTextBox.Text.Equals(displayText))
+            {
+                return;
+            }
+
+            txtNotificationTextBox.ForeColor = notificationsResult.Notifications.Count > 0 ? Color.Red : Color.Black;
+            txtNotificationTextBox.Text = displayText;
 
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.ShowInTaskbar = true;
+            isShownAutomatically = true;
             // Let the system tray icon visible as the menu options are needed to close the window.
             // systemTrayIcon.Visible = false;
         }
@@ -88,17 +128,29 @@ namespace NetworkDeviceMonitor
 
         private void btnOk_Click_1(object sender, EventArgs e)
         {
+            this.isShownAutomatically = false;
             this.MinimizeWindow();
         }
 
         private void systemTrayIcon_MouseClick(object sender, MouseEventArgs clickEvent)
         {
             if (clickEvent == null || clickEvent.Button == MouseButtons.Left)
-                ShowAppInNormalWindowSize(null);
+            {
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    ShowAppInNormalWindowSize(null);
+                }
+                else
+                {
+                    this.MinimizeWindow();
+                    this.isShownAutomatically = false;
+                }
+            }
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            isShownAutomatically = false;
             ShowAppInNormalWindowSize(null);
         }
 
