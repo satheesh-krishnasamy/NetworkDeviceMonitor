@@ -40,14 +40,12 @@ namespace NetworkDeviceMonitor.Lib.Logic
             {
                 NotificationEvent(notifications);
             }
-
-            StarDeviceMonitor();
         }
 
         public void StarDeviceMonitor()
         {
             if (NotificationEvent != null)
-                this.timer.Change(0, this.config.StatusCheckInterval.Milliseconds);
+                this.timer.Change(TimeSpan.Zero, this.config.StatusCheckInterval);
         }
 
         public void StopDeviceMonitor()

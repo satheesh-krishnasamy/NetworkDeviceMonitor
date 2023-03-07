@@ -43,6 +43,8 @@ namespace NetworkDeviceMonitor
             }
         }
 
+        private string lastMessageShown = string.Empty;
+
         private void ShowAppInNormalWindowSize(NotificationModel notificationsResult)
         {
             if (notificationsResult == null)
@@ -65,8 +67,14 @@ namespace NetworkDeviceMonitor
                     MinimizeWindow();
 
                 txtNotificationTextBox.ForeColor = Color.Black;
-                txtNotificationTextBox.Text = FormNotificationText(notificationsResult.Information);
 
+                var infoAlone = FormNotificationText(notificationsResult.Information);
+
+                if (!string.IsNullOrWhiteSpace(infoAlone))
+                {
+                    lastMessageShown = infoAlone;
+                    txtNotificationTextBox.Text = infoAlone + Environment.NewLine + $"Last checked on: {DateTime.Now}";
+                }
                 isShownAutomatically = false;
                 return;
             }
@@ -75,14 +83,19 @@ namespace NetworkDeviceMonitor
                 Environment.NewLine +
                 FormNotificationText(notificationsResult.Information);
 
-            if (txtNotificationTextBox.Text != null
-                && txtNotificationTextBox.Text.Equals(displayText))
+            if (lastMessageShown != null
+                && lastMessageShown.Equals(displayText))
             {
                 return;
             }
 
             txtNotificationTextBox.ForeColor = notificationsResult.Notifications.Count > 0 ? Color.Red : Color.Black;
-            txtNotificationTextBox.Text = displayText;
+
+            if (!string.IsNullOrWhiteSpace(displayText))
+            {
+                lastMessageShown = displayText;
+                txtNotificationTextBox.Text = displayText + Environment.NewLine + $"Last checked on: {DateTime.Now}";
+            }
 
             this.Show();
             this.WindowState = FormWindowState.Normal;
