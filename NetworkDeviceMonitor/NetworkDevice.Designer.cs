@@ -41,6 +41,7 @@
             this.systemTrayIconClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblLastStatusCheck = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabNotificationsPage.SuspendLayout();
             this.tabSettingsPage.SuspendLayout();
@@ -49,40 +50,45 @@
             // 
             // txtNotificationTextBox
             // 
-            this.txtNotificationTextBox.Location = new System.Drawing.Point(6, 6);
+            this.txtNotificationTextBox.Location = new System.Drawing.Point(7, 8);
+            this.txtNotificationTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtNotificationTextBox.Multiline = true;
             this.txtNotificationTextBox.Name = "txtNotificationTextBox";
             this.txtNotificationTextBox.ReadOnly = true;
-            this.txtNotificationTextBox.Size = new System.Drawing.Size(538, 112);
+            this.txtNotificationTextBox.Size = new System.Drawing.Size(614, 148);
             this.txtNotificationTextBox.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabNotificationsPage);
             this.tabControl1.Controls.Add(this.tabSettingsPage);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(14, 16);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(558, 195);
+            this.tabControl1.Size = new System.Drawing.Size(638, 260);
             this.tabControl1.TabIndex = 2;
             // 
             // tabNotificationsPage
             // 
+            this.tabNotificationsPage.Controls.Add(this.lblLastStatusCheck);
             this.tabNotificationsPage.Controls.Add(this.btnOk);
             this.tabNotificationsPage.Controls.Add(this.txtNotificationTextBox);
-            this.tabNotificationsPage.Location = new System.Drawing.Point(4, 24);
+            this.tabNotificationsPage.Location = new System.Drawing.Point(4, 29);
+            this.tabNotificationsPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabNotificationsPage.Name = "tabNotificationsPage";
-            this.tabNotificationsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabNotificationsPage.Size = new System.Drawing.Size(550, 167);
+            this.tabNotificationsPage.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabNotificationsPage.Size = new System.Drawing.Size(630, 227);
             this.tabNotificationsPage.TabIndex = 0;
             this.tabNotificationsPage.Text = "Notification";
             this.tabNotificationsPage.UseVisualStyleBackColor = true;
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(6, 124);
+            this.btnOk.Location = new System.Drawing.Point(7, 165);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.Size = new System.Drawing.Size(86, 31);
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "&Ok";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -92,10 +98,11 @@
             // 
             this.tabSettingsPage.Controls.Add(this.chkBoxClosePreference);
             this.tabSettingsPage.Controls.Add(this.tableLayoutPanel1);
-            this.tabSettingsPage.Location = new System.Drawing.Point(4, 24);
+            this.tabSettingsPage.Location = new System.Drawing.Point(4, 29);
+            this.tabSettingsPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabSettingsPage.Name = "tabSettingsPage";
-            this.tabSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettingsPage.Size = new System.Drawing.Size(550, 167);
+            this.tabSettingsPage.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabSettingsPage.Size = new System.Drawing.Size(630, 227);
             this.tabSettingsPage.TabIndex = 1;
             this.tabSettingsPage.Text = "Settings";
             this.tabSettingsPage.UseVisualStyleBackColor = true;
@@ -105,9 +112,10 @@
             this.chkBoxClosePreference.AutoSize = true;
             this.chkBoxClosePreference.Checked = true;
             this.chkBoxClosePreference.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkBoxClosePreference.Location = new System.Drawing.Point(10, 15);
+            this.chkBoxClosePreference.Location = new System.Drawing.Point(11, 20);
+            this.chkBoxClosePreference.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkBoxClosePreference.Name = "chkBoxClosePreference";
-            this.chkBoxClosePreference.Size = new System.Drawing.Size(181, 19);
+            this.chkBoxClosePreference.Size = new System.Drawing.Size(224, 24);
             this.chkBoxClosePreference.TabIndex = 1;
             this.chkBoxClosePreference.Text = "Minimize window upon close";
             this.chkBoxClosePreference.UseVisualStyleBackColor = true;
@@ -117,13 +125,14 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(17, 61);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(19, 81);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(229, 133);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // systemTrayIcon
@@ -137,38 +146,49 @@
             // 
             // systemTrayIconClickMenu
             // 
+            this.systemTrayIconClickMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.systemTrayIconClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.systemTrayIconClickMenu.Name = "systemTrayIconClickMenu";
-            this.systemTrayIconClickMenu.Size = new System.Drawing.Size(104, 48);
+            this.systemTrayIconClickMenu.Size = new System.Drawing.Size(115, 52);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(114, 24);
             this.toolStripMenuItem1.Text = "&Show";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // lblLastStatusCheck
+            // 
+            this.lblLastStatusCheck.AutoSize = true;
+            this.lblLastStatusCheck.Location = new System.Drawing.Point(101, 171);
+            this.lblLastStatusCheck.Name = "lblLastStatusCheck";
+            this.lblLastStatusCheck.Size = new System.Drawing.Size(13, 20);
+            this.lblLastStatusCheck.TabIndex = 3;
+            this.lblLastStatusCheck.Text = " ";
+            // 
             // NetworkDevice
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(582, 209);
+            this.ClientSize = new System.Drawing.Size(665, 279);
             this.ContextMenuStrip = this.systemTrayIconClickMenu;
             this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "NetworkDevice";
             this.Text = "Network device";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NetworkDevice_FormClosing);
@@ -195,5 +215,6 @@
         private ContextMenuStrip systemTrayIconClickMenu;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private Label lblLastStatusCheck;
     }
 }

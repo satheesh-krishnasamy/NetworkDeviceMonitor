@@ -14,6 +14,7 @@ namespace NetworkDeviceMonitor.Lib.Model
             this.Notifications = noticiations;
             this.IsCharging = isCharging;
             this.Information = information;
+            this.LastStatusCheckOn = DateTime.Now;
         }
 
         public bool IsCharging { get; private set; }
@@ -21,6 +22,8 @@ namespace NetworkDeviceMonitor.Lib.Model
         public IReadOnlyDictionary<string, string> Notifications { get; private set; }
 
         public IReadOnlyDictionary<string, string> Information { get; private set; }
+
+        public DateTime LastStatusCheckOn { get; private set; }
 
     }
 }

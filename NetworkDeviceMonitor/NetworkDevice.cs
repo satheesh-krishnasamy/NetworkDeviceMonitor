@@ -28,24 +28,19 @@ namespace NetworkDeviceMonitor
 
         private void OnDeviceNotifications(NotificationModel notifications)
         {
-            //if (notifications == null || (notifications.Notifications.Count < 1 && !notifications.IsCharging))
-            //{
-            //    return;
-            //}
-
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new NotificationHandler(ShowAppInNormalWindowSize), notifications);
+                this.BeginInvoke(new NotificationHandler(HandleNetworkDeviceNotifications), notifications);
             }
             else
             {
-                this.ShowAppInNormalWindowSize(notifications);
+                this.HandleNetworkDeviceNotifications(notifications);
             }
         }
 
         private string lastMessageShown = string.Empty;
 
-        private void ShowAppInNormalWindowSize(NotificationModel notificationsResult)
+        private void HandleNetworkDeviceNotifications(NotificationModel notificationsResult)
         {
             if (notificationsResult == null)
             {
@@ -56,6 +51,8 @@ namespace NetworkDeviceMonitor
                 this.isShownAutomatically = false;
                 return;
             }
+
+            lblLastStatusCheck.Text = $"Last checked on: {notificationsResult.LastStatusCheckOn}";
 
             if (notificationsResult.Notifications == null ||
                 notificationsResult.Notifications.Count < 1 ||
@@ -73,7 +70,7 @@ namespace NetworkDeviceMonitor
                 if (!string.IsNullOrWhiteSpace(infoAlone))
                 {
                     lastMessageShown = infoAlone;
-                    txtNotificationTextBox.Text = infoAlone + Environment.NewLine + $"Last checked on: {DateTime.Now}";
+                    txtNotificationTextBox.Text = infoAlone;
                 }
                 isShownAutomatically = false;
                 return;
@@ -94,7 +91,7 @@ namespace NetworkDeviceMonitor
             if (!string.IsNullOrWhiteSpace(displayText))
             {
                 lastMessageShown = displayText;
-                txtNotificationTextBox.Text = displayText + Environment.NewLine + $"Last checked on: {DateTime.Now}";
+                txtNotificationTextBox.Text = displayText;
             }
 
             this.Show();
@@ -151,7 +148,7 @@ namespace NetworkDeviceMonitor
             {
                 if (this.WindowState == FormWindowState.Minimized)
                 {
-                    ShowAppInNormalWindowSize(null);
+                    HandleNetworkDeviceNotifications(null);
                 }
                 else
                 {
@@ -164,7 +161,7 @@ namespace NetworkDeviceMonitor
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             isShownAutomatically = false;
-            ShowAppInNormalWindowSize(null);
+            HandleNetworkDeviceNotifications(null);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
