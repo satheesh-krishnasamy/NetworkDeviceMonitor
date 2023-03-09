@@ -52,7 +52,7 @@ namespace NetworkDeviceMonitor
                 return;
             }
 
-            lblLastStatusCheck.Text = $"Last checked on: {notificationsResult.LastStatusCheckOn}";
+            // lblLastStatusCheck.Text = $"Last checked on: {notificationsResult.LastStatusCheckOn}";
 
             if (notificationsResult.Notifications == null ||
                 notificationsResult.Notifications.Count < 1 ||
@@ -71,6 +71,8 @@ namespace NetworkDeviceMonitor
                 {
                     lastMessageShown = infoAlone;
                     txtNotificationTextBox.Text = infoAlone;
+
+                    lblLastStatusCheckDateTime.Text = notificationsResult.LastStatusCheckOn.ToString();
                 }
                 isShownAutomatically = false;
                 return;
@@ -83,6 +85,10 @@ namespace NetworkDeviceMonitor
             if (lastMessageShown != null
                 && lastMessageShown.Equals(displayText))
             {
+                if (!string.IsNullOrWhiteSpace(displayText))
+                {
+                    lblLastStatusCheckDateTime.Text = notificationsResult.LastStatusCheckOn.ToString();
+                }
                 return;
             }
 
@@ -92,6 +98,8 @@ namespace NetworkDeviceMonitor
             {
                 lastMessageShown = displayText;
                 txtNotificationTextBox.Text = displayText;
+
+                lblLastStatusCheckDateTime.Text = notificationsResult.LastStatusCheckOn.ToString();
             }
 
             this.Show();

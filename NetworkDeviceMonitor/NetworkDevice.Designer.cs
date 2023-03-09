@@ -33,6 +33,7 @@
             this.txtNotificationTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabNotificationsPage = new System.Windows.Forms.TabPage();
+            this.lblLastStatusCheckDateTime = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.tabSettingsPage = new System.Windows.Forms.TabPage();
             this.chkBoxClosePreference = new System.Windows.Forms.CheckBox();
@@ -41,7 +42,7 @@
             this.systemTrayIconClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblLastStatusCheck = new System.Windows.Forms.Label();
+            this.LstCheckedOnLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabNotificationsPage.SuspendLayout();
             this.tabSettingsPage.SuspendLayout();
@@ -71,7 +72,8 @@
             // 
             // tabNotificationsPage
             // 
-            this.tabNotificationsPage.Controls.Add(this.lblLastStatusCheck);
+            this.tabNotificationsPage.Controls.Add(this.LstCheckedOnLabel);
+            this.tabNotificationsPage.Controls.Add(this.lblLastStatusCheckDateTime);
             this.tabNotificationsPage.Controls.Add(this.btnOk);
             this.tabNotificationsPage.Controls.Add(this.txtNotificationTextBox);
             this.tabNotificationsPage.Location = new System.Drawing.Point(4, 29);
@@ -82,6 +84,15 @@
             this.tabNotificationsPage.TabIndex = 0;
             this.tabNotificationsPage.Text = "Notification";
             this.tabNotificationsPage.UseVisualStyleBackColor = true;
+            // 
+            // lblLastStatusCheckDateTime
+            // 
+            this.lblLastStatusCheckDateTime.AutoSize = true;
+            this.lblLastStatusCheckDateTime.Location = new System.Drawing.Point(244, 170);
+            this.lblLastStatusCheckDateTime.Name = "lblLastStatusCheckDateTime";
+            this.lblLastStatusCheckDateTime.Size = new System.Drawing.Size(133, 20);
+            this.lblLastStatusCheckDateTime.TabIndex = 3;
+            this.lblLastStatusCheckDateTime.Text = "<not checked yet>";
             // 
             // btnOk
             // 
@@ -167,14 +178,14 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // lblLastStatusCheck
+            // LstCheckedOnLabel
             // 
-            this.lblLastStatusCheck.AutoSize = true;
-            this.lblLastStatusCheck.Location = new System.Drawing.Point(101, 171);
-            this.lblLastStatusCheck.Name = "lblLastStatusCheck";
-            this.lblLastStatusCheck.Size = new System.Drawing.Size(13, 20);
-            this.lblLastStatusCheck.TabIndex = 3;
-            this.lblLastStatusCheck.Text = " ";
+            this.LstCheckedOnLabel.AutoSize = true;
+            this.LstCheckedOnLabel.Location = new System.Drawing.Point(99, 170);
+            this.LstCheckedOnLabel.Name = "LstCheckedOnLabel";
+            this.LstCheckedOnLabel.Size = new System.Drawing.Size(139, 20);
+            this.LstCheckedOnLabel.TabIndex = 4;
+            this.LstCheckedOnLabel.Text = "Last status check on";
             // 
             // NetworkDevice
             // 
@@ -215,6 +226,7 @@
         private ContextMenuStrip systemTrayIconClickMenu;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private Label lblLastStatusCheck;
+        private Label lblLastStatusCheckDateTime;
+        private Label LstCheckedOnLabel;
     }
 }
