@@ -33,6 +33,7 @@
             this.txtNotificationTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabNotificationsPage = new System.Windows.Forms.TabPage();
+            this.LstCheckedOnLabel = new System.Windows.Forms.Label();
             this.lblLastStatusCheckDateTime = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.tabSettingsPage = new System.Windows.Forms.TabPage();
@@ -42,7 +43,7 @@
             this.systemTrayIconClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LstCheckedOnLabel = new System.Windows.Forms.Label();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabNotificationsPage.SuspendLayout();
             this.tabSettingsPage.SuspendLayout();
@@ -72,6 +73,7 @@
             // 
             // tabNotificationsPage
             // 
+            this.tabNotificationsPage.Controls.Add(this.refreshButton);
             this.tabNotificationsPage.Controls.Add(this.LstCheckedOnLabel);
             this.tabNotificationsPage.Controls.Add(this.lblLastStatusCheckDateTime);
             this.tabNotificationsPage.Controls.Add(this.btnOk);
@@ -85,10 +87,19 @@
             this.tabNotificationsPage.Text = "Notification";
             this.tabNotificationsPage.UseVisualStyleBackColor = true;
             // 
+            // LstCheckedOnLabel
+            // 
+            this.LstCheckedOnLabel.AutoSize = true;
+            this.LstCheckedOnLabel.Location = new System.Drawing.Point(16, 170);
+            this.LstCheckedOnLabel.Name = "LstCheckedOnLabel";
+            this.LstCheckedOnLabel.Size = new System.Drawing.Size(139, 20);
+            this.LstCheckedOnLabel.TabIndex = 4;
+            this.LstCheckedOnLabel.Text = "Last status check on";
+            // 
             // lblLastStatusCheckDateTime
             // 
             this.lblLastStatusCheckDateTime.AutoSize = true;
-            this.lblLastStatusCheckDateTime.Location = new System.Drawing.Point(244, 170);
+            this.lblLastStatusCheckDateTime.Location = new System.Drawing.Point(161, 170);
             this.lblLastStatusCheckDateTime.Name = "lblLastStatusCheckDateTime";
             this.lblLastStatusCheckDateTime.Size = new System.Drawing.Size(133, 20);
             this.lblLastStatusCheckDateTime.TabIndex = 3;
@@ -96,7 +107,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(7, 165);
+            this.btnOk.Location = new System.Drawing.Point(535, 170);
             this.btnOk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(86, 31);
@@ -178,14 +189,16 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // LstCheckedOnLabel
+            // refreshButton
             // 
-            this.LstCheckedOnLabel.AutoSize = true;
-            this.LstCheckedOnLabel.Location = new System.Drawing.Point(99, 170);
-            this.LstCheckedOnLabel.Name = "LstCheckedOnLabel";
-            this.LstCheckedOnLabel.Size = new System.Drawing.Size(139, 20);
-            this.LstCheckedOnLabel.TabIndex = 4;
-            this.LstCheckedOnLabel.Text = "Last status check on";
+            this.refreshButton.Location = new System.Drawing.Point(421, 170);
+            this.refreshButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(86, 31);
+            this.refreshButton.TabIndex = 5;
+            this.refreshButton.Text = "&Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // NetworkDevice
             // 
@@ -228,5 +241,6 @@
         private ToolStripMenuItem exitToolStripMenuItem;
         private Label lblLastStatusCheckDateTime;
         private Label LstCheckedOnLabel;
+        private Button refreshButton;
     }
 }

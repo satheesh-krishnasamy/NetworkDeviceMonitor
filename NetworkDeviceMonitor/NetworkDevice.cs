@@ -13,6 +13,8 @@ namespace NetworkDeviceMonitor
         private readonly JioDeviceMonitorLogic deviceMonitor;
         private bool userForcedClose = false;
         private bool isShownAutomatically = false;
+        private string lastMessageShown = string.Empty;
+        private DateTime lastRefreshedAt = DateTime.MinValue;
 
 
         private delegate void NotificationHandler(NotificationModel notifications);
@@ -38,7 +40,6 @@ namespace NetworkDeviceMonitor
             }
         }
 
-        private string lastMessageShown = string.Empty;
 
         private void HandleNetworkDeviceNotifications(NotificationModel notificationsResult)
         {
@@ -72,6 +73,7 @@ namespace NetworkDeviceMonitor
                     lastMessageShown = infoAlone;
                     txtNotificationTextBox.Text = infoAlone;
 
+                    lastRefreshedAt = notificationsResult.LastStatusCheckOn;
                     lblLastStatusCheckDateTime.Text = notificationsResult.LastStatusCheckOn.ToString();
                 }
                 isShownAutomatically = false;
@@ -176,6 +178,35 @@ namespace NetworkDeviceMonitor
         {
             this.userForcedClose = true;
             this.Close();
+        }
+
+        private async void refreshButton_Click(object sender, EventArgs e)
+        {
+            if (lastRefreshedAt > DateTime.Now.AddSeconds(-30))
+            {
+                MessageBox.Show("Wait 30 seconds before refresh.", "Not allowed");
+                return;
+            }
+
+            lastRefreshedAt = DateTime.Now;
+            refreshButton.Text = "Refreshing...";
+            try
+            {
+                var notifications = await this.deviceMonitor.GetNotificationsAsync();
+                if (notifications != null)
+                {
+                    this.HandleNetworkDeviceNotifications(notifications);
+                }
+            }
+            catch (Exception exp)
+            {
+                /*Error*/
+                MessageBox.Show($"Unable to refresh. [{exp.Message}", "Error");
+            }
+            finally
+            {
+                refreshButton.Text = "Refresh";
+            }
         }
     }
 }
