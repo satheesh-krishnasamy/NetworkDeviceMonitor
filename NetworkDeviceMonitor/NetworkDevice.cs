@@ -10,11 +10,13 @@ namespace NetworkDeviceMonitor
 {
     public partial class NetworkDevice : Form
     {
+        private const int RefreshIntervalOnSuccessfulRefresh = 30;
+        private const int RefreshIntervalOnFailureRefresh = 10;
         private readonly JioDeviceMonitorLogic deviceMonitor;
         private bool userForcedClose = false;
         private bool isShownAutomatically = false;
         private string lastMessageShown = string.Empty;
-        private DateTime lastRefreshedAt = DateTime.MinValue;
+        private DateTime nextRefreshAt = DateTime.MinValue;
 
 
         private delegate void NotificationHandler(NotificationModel notifications);
@@ -73,7 +75,7 @@ namespace NetworkDeviceMonitor
                     lastMessageShown = infoAlone;
                     txtNotificationTextBox.Text = infoAlone;
 
-                    lastRefreshedAt = notificationsResult.LastStatusCheckOn;
+                    nextRefreshAt = notificationsResult.LastStatusCheckOn.AddSeconds(RefreshIntervalOnSuccessfulRefresh);
                     lblLastStatusCheckDateTime.Text = notificationsResult.LastStatusCheckOn.ToString();
                 }
                 isShownAutomatically = false;
@@ -182,24 +184,29 @@ namespace NetworkDeviceMonitor
 
         private async void refreshButton_Click(object sender, EventArgs e)
         {
-            if (lastRefreshedAt > DateTime.Now.AddSeconds(-30))
+            if (DateTime.Now < nextRefreshAt)
             {
-                MessageBox.Show("Wait 30 seconds before refresh.", "Not allowed");
                 return;
             }
 
-            lastRefreshedAt = DateTime.Now;
+
             refreshButton.Text = "Refreshing...";
             try
             {
                 var notifications = await this.deviceMonitor.GetNotificationsAsync();
                 if (notifications != null)
                 {
+                    nextRefreshAt = DateTime.Now.AddSeconds(RefreshIntervalOnSuccessfulRefresh);
                     this.HandleNetworkDeviceNotifications(notifications);
+                }
+                else
+                {
+                    nextRefreshAt = DateTime.Now.AddSeconds(RefreshIntervalOnFailureRefresh);
                 }
             }
             catch (Exception exp)
             {
+                nextRefreshAt = DateTime.Now.AddSeconds(RefreshIntervalOnFailureRefresh);
                 /*Error*/
                 MessageBox.Show($"Unable to refresh. [{exp.Message}", "Error");
             }
