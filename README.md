@@ -1,2 +1,2 @@
 # NetworkDeviceMonitor
- Checks the JIO FI device status and alerts on low battery or when its 100% charged.
+Checks the JIO FI device battery status,  alerts on low battery and when its 100% charged.
