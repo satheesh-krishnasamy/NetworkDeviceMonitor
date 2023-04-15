@@ -1,6 +1,7 @@
 ﻿using NetworkDeviceMonitor.Lib.Config;
 using NetworkDeviceMonitor.Lib.DAL;
 using NetworkDeviceMonitor.Lib.Model;
+using NetworkDeviceMonitor.Lib.Model.DataStore;
 using System;
 using System.Collections.Generic;
 using System.IO;

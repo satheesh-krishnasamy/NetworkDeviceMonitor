@@ -134,7 +134,8 @@ namespace NetworkDeviceMonitor
         {
             if (notificationsResult.BatteryPercentage > -1)
             {
-                this.batteryIndicator.ForeColor = notificationsResult.IsOnLowBattery ? Color.OrangeRed : Color.LightGreen;
+                this.batteryIndicator.ForeColor = notificationsResult.IsOnLowBattery ? Color.OrangeRed :
+                    notificationsResult.BatteryPercentage == 100 ? Color.Green : Color.LightGreen;
                 this.batteryIndicator.Value = notificationsResult.BatteryPercentage;
                 batteryIndicator.Text = notificationsResult.BatteryPercentage.ToString();
 
