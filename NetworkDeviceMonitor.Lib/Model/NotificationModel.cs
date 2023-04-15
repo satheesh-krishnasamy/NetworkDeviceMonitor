@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetworkDeviceMonitor.Lib.Model
 {
@@ -9,12 +8,14 @@ namespace NetworkDeviceMonitor.Lib.Model
         public NotificationModel(
             Dictionary<string, string> noticiations,
             bool isCharging = false,
-            IReadOnlyDictionary<string, string> information = null)
+            IReadOnlyDictionary<string, string> information = null,
+            int batteryPercentage = 0)
         {
             this.Notifications = noticiations;
             this.IsCharging = isCharging;
             this.Information = information;
             this.LastStatusCheckOn = DateTime.Now;
+            BatteryPercentage = batteryPercentage;
         }
 
         public bool IsCharging { get; private set; }
@@ -24,6 +25,10 @@ namespace NetworkDeviceMonitor.Lib.Model
         public IReadOnlyDictionary<string, string> Information { get; private set; }
 
         public DateTime LastStatusCheckOn { get; private set; }
+
+        public int BatteryPercentage { get; set; }
+
+        public bool IsOnLowBattery { get; set; }
 
     }
 }

@@ -1,10 +1,9 @@
 using Microsoft.Extensions.Configuration;
+using NetworkDeviceMonitor.CustomControls;
 using NetworkDeviceMonitor.Lib.Config;
 using NetworkDeviceMonitor.Lib.Logic;
 using NetworkDeviceMonitor.Lib.Model;
 using System.Text;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace NetworkDeviceMonitor
 {
@@ -17,6 +16,7 @@ namespace NetworkDeviceMonitor
         private bool isShownAutomatically = false;
         private string lastMessageShown = string.Empty;
         private DateTime nextRefreshAt = DateTime.MinValue;
+        private readonly BasicProgressBar batteryIndicator = new BasicProgressBar();
 
 
         private delegate void NotificationHandler(NotificationModel notifications);
@@ -25,9 +25,23 @@ namespace NetworkDeviceMonitor
         {
             InitializeComponent();
 
+            batteryIndicator.Minimum = 0;
+            batteryIndicator.Maximum = 100;
+            batteryIndicator.Value = 0;
+            batteryIndicator.Text = "-";
+            batteryIndicator.Size = new Size(batteryIndicatorSection.Width, batteryIndicatorSection.Height);
+            batteryIndicator.Orientation = batteryIndicatorSection.Width < batteryIndicatorSection.Height ?
+                Orientation.Vertical : Orientation.Horizontal;
+            // Set the TextStyle to show the symbol % in the control.
+            batteryIndicator.TextStyle = BasicProgressBar.TextStyleType.Percentage;
+            batteryIndicatorSection.Controls.Add(batteryIndicator);
+
             this.deviceMonitor = new JioDeviceMonitorLogic(new HttpClient(), new NotificationConfig(config));
             this.deviceMonitor.NotificationEvent += OnDeviceNotifications;
             this.deviceMonitor.StarDeviceMonitor();
+
+
+
         }
 
         private void OnDeviceNotifications(NotificationModel notifications)
@@ -56,6 +70,8 @@ namespace NetworkDeviceMonitor
             }
 
             // lblLastStatusCheck.Text = $"Last checked on: {notificationsResult.LastStatusCheckOn}";
+
+            DisplayBatteryStatus(notificationsResult);
 
             if (notificationsResult.Notifications == null ||
                 notificationsResult.Notifications.Count < 1 ||
@@ -112,6 +128,21 @@ namespace NetworkDeviceMonitor
             isShownAutomatically = true;
             // Let the system tray icon visible as the menu options are needed to close the window.
             // systemTrayIcon.Visible = false;
+        }
+
+        private void DisplayBatteryStatus(NotificationModel notificationsResult)
+        {
+            if (notificationsResult.BatteryPercentage > -1)
+            {
+                this.batteryIndicator.ForeColor = notificationsResult.IsOnLowBattery ? Color.OrangeRed : Color.LightGreen;
+                this.batteryIndicator.Value = notificationsResult.BatteryPercentage;
+                batteryIndicator.Text = notificationsResult.BatteryPercentage.ToString();
+
+            }
+            else
+            {
+                this.batteryIndicator.Value = 0;
+            }
         }
 
         private string FormNotificationText(IReadOnlyDictionary<string, string> notifications)

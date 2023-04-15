@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Serialization;
-using System.Collections.Generic;
+﻿using System.Xml.Serialization;
 namespace NetworkDeviceMonitor.Lib.Model
 {
     [XmlRoot(ElementName = "dev")]

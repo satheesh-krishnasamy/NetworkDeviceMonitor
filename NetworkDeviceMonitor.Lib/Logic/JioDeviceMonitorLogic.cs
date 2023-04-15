@@ -1,19 +1,16 @@
 ﻿using NetworkDeviceMonitor.Lib.Config;
+using NetworkDeviceMonitor.Lib.DAL;
 using NetworkDeviceMonitor.Lib.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace NetworkDeviceMonitor.Lib.Logic
 {
-
-
     public class JioDeviceMonitorLogic : IJioDeviceMonitorLogic, IDisposable
     {
         /// <summary>
@@ -35,7 +32,7 @@ namespace NetworkDeviceMonitor.Lib.Logic
         /// Timer to periodically check the device status.
         /// </summary>
         private readonly Timer timer;
-
+        private readonly NetworkDataStore networkDataStore;
         const string jioDeviceStatusUrlFormat = "http://jiofi.local.html/st_dev.w.xml?_={0}";
 
         /// <summary>
@@ -75,6 +72,7 @@ namespace NetworkDeviceMonitor.Lib.Logic
             this.responseSerializer = new XmlSerializer(typeof(StDevResponseRoot));
             this.config = config;
             this.timer = new Timer(StatusCheckTimer_OnTimeoutAsync, null, Timeout.Infinite, -1);
+            this.networkDataStore = new NetworkDataStore("Data Source=" + Path.Combine(Directory.GetCurrentDirectory(), "networkdevice.db"));
         }
 
         /// <summary>
@@ -137,15 +135,33 @@ namespace NetworkDeviceMonitor.Lib.Logic
             var deviceStatus = await this.GetDeviceDetailsAsync();
             Dictionary<string, string> notifications;
             Dictionary<string, string> info;
+            int batteryPercentage = 0;
 
             BatteryStatus batteryStatus = BatteryStatus.NoBattery;
 
             if (deviceStatus != null)
             {
                 batteryStatus = ParseBatteryStatus(deviceStatus.Batt_st);
+                batteryPercentage = deviceStatus.BatteryPercentage;
 
                 notifications = FormNotifications(deviceStatus, batteryStatus);
                 info = FormInformation(deviceStatus, batteryStatus);
+
+                try
+                {
+                    var batteryInfo = new BatteryDataItem()
+                    {
+                        BatteryPercentage = deviceStatus.BatteryPercentage,
+                        EventDateTime = DateTime.Now,
+                        IsCharging = batteryStatus == BatteryStatus.Charging
+                    };
+
+                    await this.networkDataStore.SaveAsync(batteryInfo);
+                }
+                catch (Exception ex)
+                {
+                    // have to handle exception
+                }
             }
             else
             {
@@ -153,10 +169,23 @@ namespace NetworkDeviceMonitor.Lib.Logic
                 info = new Dictionary<string, string>();
             }
 
-            return new NotificationModel(
+            //try
+            //{
+            //    var allRecords = await networkDataStore.GetAsync(DateTime.MinValue, DateTime.Now);
+            //}
+            //catch (Exception exp)
+            //{
+            //    //tbd
+            //}
+            var notificationModel = new NotificationModel(
                 notifications,
                 batteryStatus == BatteryStatus.Charging,
-                info);
+                info,
+                batteryPercentage);
+
+            notificationModel.IsOnLowBattery = IsLowBattery(batteryPercentage, batteryStatus);
+
+            return notificationModel;
         }
 
         private Dictionary<string, string> FormInformation(StDevResponseRoot deviceStatus, BatteryStatus batteryStatus)
@@ -196,8 +225,7 @@ namespace NetworkDeviceMonitor.Lib.Logic
         {
             Dictionary<string, string> notifications = new Dictionary<string, string>();
 
-            if (deviceStatus.BatteryPercentage < this.config.LowBatteryPercentage
-                                && batteryStatus == BatteryStatus.Discharging)
+            if (IsLowBattery(deviceStatus.BatteryPercentage, batteryStatus))
             {
                 notifications.Add("Network device is on Low battery. ", deviceStatus.BatteryPercentage.ToString() + "%");
             }
@@ -208,6 +236,12 @@ namespace NetworkDeviceMonitor.Lib.Logic
             }
 
             return notifications;
+        }
+
+        private bool IsLowBattery(int batteryPercentage, BatteryStatus batteryStatus)
+        {
+            return batteryPercentage < this.config.LowBatteryPercentage
+                                            && batteryStatus == BatteryStatus.Discharging;
         }
 
         /// <summary>
