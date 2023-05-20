@@ -14,4 +14,4 @@ This app does the following by periodically monitoring the device.
 2. This app records the battery status in in-memory light-wight SQLite DB. This data will never be shared/accessed/uploaded outside of you machine. 
 
 ## Work in progress
-The app only writes the battery status and charger connected information in this SQLite DB. The app will provide you insights [charge speed, usuall charging speed, battery health based on this charging speed, time to replace battery, etc,.] on this data in future.
+The app only writes the battery status and charger connected information in this SQLite DB. The app will provide you insights [charge speed, usuall charging speed, battery health based on this charging speed, draining speed, time to replace battery, etc,.] on this data in future.
