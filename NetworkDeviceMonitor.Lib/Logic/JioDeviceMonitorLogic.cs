@@ -241,8 +241,9 @@ namespace NetworkDeviceMonitor.Lib.Logic
 
         private bool IsLowBattery(int batteryPercentage, BatteryStatus batteryStatus)
         {
-            return batteryPercentage < this.config.LowBatteryPercentage
-                                            && batteryStatus == BatteryStatus.Discharging;
+            return batteryPercentage != -100 
+                && batteryPercentage < this.config.LowBatteryPercentage
+                && batteryStatus == BatteryStatus.Discharging;
         }
 
         /// <summary>
