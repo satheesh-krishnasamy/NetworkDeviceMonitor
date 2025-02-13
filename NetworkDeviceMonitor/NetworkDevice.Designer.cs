@@ -33,10 +33,12 @@
             this.txtNotificationTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabNotificationsPage = new System.Windows.Forms.TabPage();
+            this.pnlMessageBox = new System.Windows.Forms.Panel();
+            this.lblLastStatusCheckDateTime = new System.Windows.Forms.Label();
+            this.btnShowBatteryTrend = new System.Windows.Forms.Button();
             this.batteryIndicatorSection = new System.Windows.Forms.Panel();
             this.refreshButton = new System.Windows.Forms.Button();
             this.LstCheckedOnLabel = new System.Windows.Forms.Label();
-            this.lblLastStatusCheckDateTime = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.tabSettingsPage = new System.Windows.Forms.TabPage();
             this.chkBoxClosePreference = new System.Windows.Forms.CheckBox();
@@ -47,6 +49,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabNotificationsPage.SuspendLayout();
+            this.pnlMessageBox.SuspendLayout();
             this.tabSettingsPage.SuspendLayout();
             this.systemTrayIconClickMenu.SuspendLayout();
             this.SuspendLayout();
@@ -67,24 +70,55 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(558, 195);
+            this.tabControl1.Size = new System.Drawing.Size(558, 221);
             this.tabControl1.TabIndex = 2;
             // 
             // tabNotificationsPage
             // 
+            this.tabNotificationsPage.Controls.Add(this.pnlMessageBox);
+            this.tabNotificationsPage.Controls.Add(this.btnShowBatteryTrend);
             this.tabNotificationsPage.Controls.Add(this.batteryIndicatorSection);
             this.tabNotificationsPage.Controls.Add(this.refreshButton);
             this.tabNotificationsPage.Controls.Add(this.LstCheckedOnLabel);
-            this.tabNotificationsPage.Controls.Add(this.lblLastStatusCheckDateTime);
             this.tabNotificationsPage.Controls.Add(this.btnOk);
             this.tabNotificationsPage.Controls.Add(this.txtNotificationTextBox);
             this.tabNotificationsPage.Location = new System.Drawing.Point(4, 24);
             this.tabNotificationsPage.Name = "tabNotificationsPage";
             this.tabNotificationsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabNotificationsPage.Size = new System.Drawing.Size(550, 167);
+            this.tabNotificationsPage.Size = new System.Drawing.Size(550, 193);
             this.tabNotificationsPage.TabIndex = 0;
             this.tabNotificationsPage.Text = "Notification";
             this.tabNotificationsPage.UseVisualStyleBackColor = true;
+            // 
+            // pnlMessageBox
+            // 
+            this.pnlMessageBox.AutoScroll = true;
+            this.pnlMessageBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlMessageBox.Controls.Add(this.lblLastStatusCheckDateTime);
+            this.pnlMessageBox.Location = new System.Drawing.Point(133, 128);
+            this.pnlMessageBox.Name = "pnlMessageBox";
+            this.pnlMessageBox.Size = new System.Drawing.Size(142, 40);
+            this.pnlMessageBox.TabIndex = 8;
+            // 
+            // lblLastStatusCheckDateTime
+            // 
+            this.lblLastStatusCheckDateTime.AutoSize = true;
+            this.lblLastStatusCheckDateTime.Location = new System.Drawing.Point(3, 0);
+            this.lblLastStatusCheckDateTime.Name = "lblLastStatusCheckDateTime";
+            this.lblLastStatusCheckDateTime.Size = new System.Drawing.Size(107, 15);
+            this.lblLastStatusCheckDateTime.TabIndex = 3;
+            this.lblLastStatusCheckDateTime.Text = "<not checked yet>";
+            this.lblLastStatusCheckDateTime.Click += new System.EventHandler(this.lblLastStatusCheckDateTime_Click);
+            // 
+            // btnShowBatteryTrend
+            // 
+            this.btnShowBatteryTrend.Location = new System.Drawing.Point(289, 128);
+            this.btnShowBatteryTrend.Name = "btnShowBatteryTrend";
+            this.btnShowBatteryTrend.Size = new System.Drawing.Size(93, 23);
+            this.btnShowBatteryTrend.TabIndex = 7;
+            this.btnShowBatteryTrend.Text = "Show Trend";
+            this.btnShowBatteryTrend.UseVisualStyleBackColor = true;
+            this.btnShowBatteryTrend.Click += new System.EventHandler(this.btnShowBatteryTrend_Click);
             // 
             // batteryIndicatorSection
             // 
@@ -115,15 +149,6 @@
             this.LstCheckedOnLabel.TabIndex = 4;
             this.LstCheckedOnLabel.Text = "Last status check on";
             // 
-            // lblLastStatusCheckDateTime
-            // 
-            this.lblLastStatusCheckDateTime.AutoSize = true;
-            this.lblLastStatusCheckDateTime.Location = new System.Drawing.Point(141, 128);
-            this.lblLastStatusCheckDateTime.Name = "lblLastStatusCheckDateTime";
-            this.lblLastStatusCheckDateTime.Size = new System.Drawing.Size(107, 15);
-            this.lblLastStatusCheckDateTime.TabIndex = 3;
-            this.lblLastStatusCheckDateTime.Text = "<not checked yet>";
-            // 
             // btnOk
             // 
             this.btnOk.Location = new System.Drawing.Point(469, 128);
@@ -141,7 +166,7 @@
             this.tabSettingsPage.Location = new System.Drawing.Point(4, 24);
             this.tabSettingsPage.Name = "tabSettingsPage";
             this.tabSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettingsPage.Size = new System.Drawing.Size(550, 167);
+            this.tabSettingsPage.Size = new System.Drawing.Size(550, 193);
             this.tabSettingsPage.TabIndex = 1;
             this.tabSettingsPage.Text = "Settings";
             this.tabSettingsPage.UseVisualStyleBackColor = true;
@@ -211,7 +236,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(579, 209);
+            this.ClientSize = new System.Drawing.Size(579, 245);
             this.ContextMenuStrip = this.systemTrayIconClickMenu;
             this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
@@ -222,6 +247,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabNotificationsPage.ResumeLayout(false);
             this.tabNotificationsPage.PerformLayout();
+            this.pnlMessageBox.ResumeLayout(false);
+            this.pnlMessageBox.PerformLayout();
             this.tabSettingsPage.ResumeLayout(false);
             this.tabSettingsPage.PerformLayout();
             this.systemTrayIconClickMenu.ResumeLayout(false);
@@ -246,5 +273,7 @@
         private Label LstCheckedOnLabel;
         private Button refreshButton;
         private Panel batteryIndicatorSection;
+        private Button btnShowBatteryTrend;
+        private Panel pnlMessageBox;
     }
 }

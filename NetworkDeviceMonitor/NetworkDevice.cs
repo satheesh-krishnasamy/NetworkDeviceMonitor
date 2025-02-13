@@ -3,6 +3,7 @@ using NetworkDeviceMonitor.CustomControls;
 using NetworkDeviceMonitor.Lib.Config;
 using NetworkDeviceMonitor.Lib.Logic;
 using NetworkDeviceMonitor.Lib.Model;
+using System.Diagnostics;
 using System.Text;
 
 namespace NetworkDeviceMonitor
@@ -135,10 +136,9 @@ namespace NetworkDeviceMonitor
             if (notificationsResult.BatteryPercentage > -1)
             {
                 this.batteryIndicator.ForeColor = notificationsResult.IsOnLowBattery ? Color.OrangeRed :
-                    notificationsResult.BatteryPercentage == 100 ? Color.Green : Color.LightGreen;
+                    notificationsResult.BatteryPercentage >= 80 ? Color.Green : Color.LightGreen;
                 this.batteryIndicator.Value = notificationsResult.BatteryPercentage;
                 batteryIndicator.Text = notificationsResult.BatteryPercentage.ToString();
-
             }
             else
             {
@@ -246,6 +246,52 @@ namespace NetworkDeviceMonitor
             {
                 refreshButton.Text = "Refresh";
             }
+        }
+
+        private async void btnShowBatteryTrend_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var dataPath = Path.Combine(basePath, "app_data", "data.js");
+                var chartHtml = Path.Combine(basePath, "app_data", "main.html");
+                var chartTemplateHtml = Path.Combine(basePath, "app_data", "main_template.html");
+
+                var mainHtmlFileContent = await File.ReadAllTextAsync(chartTemplateHtml);
+                await File.WriteAllTextAsync(chartHtml, mainHtmlFileContent.Replace("data.js", "data.js?v=" + DateTime.UnixEpoch));
+
+                var chartData = await this.deviceMonitor.GetChartDataAsync();
+                if (!string.IsNullOrWhiteSpace(chartData))
+                {
+                    await File.WriteAllTextAsync(dataPath, chartData);
+                    try
+                    {
+                        var p = new Process();
+                        p.StartInfo = new ProcessStartInfo(chartHtml)
+                        {
+                            UseShellExecute = true
+                        };
+                        p.Start();
+                    }
+                    catch (Exception errorInOpeningHtmlFile)
+                    {
+                        lblLastStatusCheckDateTime.Text = errorInOpeningHtmlFile.Message;
+                    }
+                }
+            }
+            catch (Exception ErrorInDataPopulation)
+            {
+                lblLastStatusCheckDateTime.Text = ErrorInDataPopulation.Message;
+            }
+        }
+
+        private void lblLastStatusCheckDateTime_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(lblLastStatusCheckDateTime.Text);
+            }
+            catch { }
         }
     }
 }

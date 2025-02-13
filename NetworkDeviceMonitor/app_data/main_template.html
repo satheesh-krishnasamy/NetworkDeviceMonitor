@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<script src="data.js" type="text/javascript"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<body>
+    <div id="myChart"
+            style="width:98%;
+            height:95%; 
+            scroll-behavior:auto;
+            scrollbar-color:lightblue;">
+    </div>
+
+    <script>
+        google.charts.load('current', { packages: ['annotationchart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            // Set Data
+            //const data = google.visualization.arrayToDataTable(chartData);
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'BatteryLevel');
+
+            //chartData.forEach(myFunction);
+
+            var tempData = [];
+            for (var i = 0; i < chartData.length; i++) {
+                var currentItem = chartData[i];
+                tempData.push([new Date(currentItem[0]), currentItem[1]]);
+            }
+
+            //function myFunction(value, index, array) {
+            //}
+
+            data.addRows(tempData);
+
+            // Set Options
+            const options = {
+                //title: 'Battery level trend',
+                //hAxis: { title: 'Time', },
+                //vAxis: { title: 'Battery level', minValue: -100, maxValue: 100 },
+                //displayLegendValues: true,
+                displayAnnotations: true
+            };
+
+            // Draw
+            const chart = new google.visualization.AnnotationChart(document.getElementById('myChart'));
+            chart.draw(data, options);
+
+        }
+    </script>
+
+</body>
+</html>
+
+
+

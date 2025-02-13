@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -241,7 +242,7 @@ namespace NetworkDeviceMonitor.Lib.Logic
 
         private bool IsLowBattery(int batteryPercentage, BatteryStatus batteryStatus)
         {
-            return batteryPercentage != -100 
+            return batteryPercentage != -100
                 && batteryPercentage < this.config.LowBatteryPercentage
                 && batteryStatus == BatteryStatus.Discharging;
         }
@@ -291,6 +292,28 @@ namespace NetworkDeviceMonitor.Lib.Logic
                 return BatteryStatus.FullyCharged;
 
             return BatteryStatus.NoBattery;
+        }
+
+        public async Task<string> GetChartDataAsync()
+        {
+            var minUTCDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            var batteryChargeHostoryData = await this.networkDataStore
+                .GetAsync(DateTime.Now.AddYears(-1), DateTime.Now);
+            StringBuilder dataString = new StringBuilder();
+
+            foreach (var d in batteryChargeHostoryData)
+            {
+                if (d.BatteryPercentage < 0)
+                    continue;
+
+                dataString.AppendFormat("[{0}, {1}],",
+                    new DateTimeOffset(d.EventDateTime).ToUnixTimeMilliseconds(),
+                    d.BatteryPercentage);
+            }
+            return "var chartData = [" +
+                (dataString.Length > 0 ? dataString.Remove(dataString.Length - 1, 1).ToString() : "")
+                + "];";
         }
 
         /// <summary>

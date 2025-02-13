@@ -42,10 +42,10 @@ namespace NetworkDeviceMonitor.Lib.DAL
 
                 var command = connection.CreateCommand();
 
-                if (startDateTime == DateTime.MinValue)
-                    startDateTime = DateTime.Now.Date.AddYears(-1);
-                if (endDateTime == DateTime.MinValue)
-                    endDateTime = DateTime.Now;
+                //if (startDateTime == DateTime.MinValue)
+                //    startDateTime = DateTime.Now.Date.AddYears(-1);
+                //if (endDateTime == DateTime.MinValue)
+                //    endDateTime = DateTime.Now;
 
                 command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime";
                 command.Parameters.AddWithValue("$StartTime", startDateTime);
