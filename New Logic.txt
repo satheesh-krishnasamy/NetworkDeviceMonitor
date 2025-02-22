@@ -1,0 +1,17 @@
+if (not connected)
+    if battery % is <= 10
+        alert - error
+        show alert for 20 seconds
+    else if battery % <= 20
+        alert - error
+        show alert for 10 seconds
+else if connected
+    else if battery % is > 90
+        alert - warning for better life
+        show alert for 20 seconds / autoclose
+    else if battery % > 80        
+        alert - warning for better life
+        show alert for 10 seconds / autoclose
+    else if battery % == 100
+        show without auto closing
+

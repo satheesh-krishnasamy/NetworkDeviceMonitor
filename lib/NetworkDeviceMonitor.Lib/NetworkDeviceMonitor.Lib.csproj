@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceMonitor.Lib.Dal\DeviceMonitor.Lib.Dal.csproj" />
+    <ProjectReference Include="..\DeviceMonitor.Lib.Shared\DeviceMonitor.Lib.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
