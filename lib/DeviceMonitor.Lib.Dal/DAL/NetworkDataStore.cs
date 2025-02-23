@@ -68,7 +68,7 @@ namespace WorkStationAssistant.Lib.DAL
 
         public async Task<IEnumerable<BatteryDataItem>> GetLastBatteryChargingSessionsAsync(DateTime startDateTime, DateTime endDateTime)
         {
-            List<BatteryDataItem> result = new List<BatteryDataItem>();
+            BatteryDataItem record = null;
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
@@ -80,9 +80,52 @@ namespace WorkStationAssistant.Lib.DAL
                 //if (endDateTime == DateTime.MinValue)
                 //    endDateTime = DateTime.Now;
 
-                command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime AND IsCharging = true order by EventDateTime desc LIMIT 1;";
+                command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime AND IsCharging = true order by EventDateTime asc LIMIT 1;";
                 command.Parameters.AddWithValue("$StartTime", startDateTime);
                 command.Parameters.AddWithValue("$EndTime", endDateTime);
+
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        record = new BatteryDataItem();
+                        record.EventDateTime = reader.GetDateTime(0);
+                        record.BatteryPercentage = reader.GetInt32(1);
+                        record.IsCharging = reader.GetBoolean(2);
+                        record.ChargingSessionId = reader.GetString(3);
+                    }
+                }
+            }
+
+            if (record == null)
+                return new List<BatteryDataItem>();
+
+            if (!string.IsNullOrWhiteSpace(record.ChargingSessionId))
+            {
+                return await GetLastBatteryChargingSessionsAsync(record.ChargingSessionId);
+            }
+
+            return new List<BatteryDataItem>() { record };
+        }
+
+        public async Task<IEnumerable<BatteryDataItem>> GetLastBatteryChargingSessionsAsync(string lastChargingSessionId)
+        {
+            List<BatteryDataItem> result = new List<BatteryDataItem>();
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+
+                var startDateTime = DateTime.Now.Date.AddHours(2);
+                var endDateTime = DateTime.Now;
+
+                command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime AND IsCharging = true AND SessionId = $SessionId order by EventDateTime asc LIMIT 1;";
+                command.Parameters.AddWithValue("$StartTime", startDateTime);
+                command.Parameters.AddWithValue("$EndTime", endDateTime);
+                command.Parameters.AddWithValue("$SessionId", lastChargingSessionId);
+
 
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -102,7 +145,6 @@ namespace WorkStationAssistant.Lib.DAL
 
             return result;
         }
-
 
         public async Task<bool> SaveAsync(BatteryDataItem batteryData)
         {
