@@ -61,7 +61,7 @@ namespace DeviceMonitor.Lib.Shared.Logic
 
         public async Task<string> GetChartDataAsync(DeviceType deviceType)
         {
-            var dm = this.deviceMonitors.First(d => d.DeviceType == DeviceType.NetworkDevice);
+            var dm = this.deviceMonitors.First(d => d.DeviceType == deviceType);
             return await dm.GetChartDataAsync();
         }
 

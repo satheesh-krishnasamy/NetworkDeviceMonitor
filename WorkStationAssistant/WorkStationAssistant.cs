@@ -35,6 +35,10 @@ namespace WorkStationAssistant
             batteryIndicatorNw = GetNewBatteryIndicator(pnlNwBatteryInfo);
             batteryIndicatorLaptop = GetNewBatteryIndicator(pnlLaptopBatteryInfo);
 
+#if DEBUG
+            this.Text = this.Text + " - Debug mode";
+#endif
+
             var notificationConfig = new NotificationConfig(config);
             var deviceMonitorsList = new List<IDeviceMonitorLogic>();
             deviceMonitorsList.Add(new JioDeviceMonitorLogic(new HttpClient(), notificationConfig));
