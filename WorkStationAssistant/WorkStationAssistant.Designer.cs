@@ -281,7 +281,7 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
-            // NetworkDevice
+            // WorkStationAssistant
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -297,8 +297,8 @@
             Controls.Add(lblNwLastStatusChecked);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "NetworkDevice";
-            Text = "Network device";
+            Name = "WorkStationAssistant";
+            Text = "Workstation Assistant";
             FormClosing += NetworkDevice_FormClosing;
             Load += NetworkDevice_Load;
             tabControl1.ResumeLayout(false);

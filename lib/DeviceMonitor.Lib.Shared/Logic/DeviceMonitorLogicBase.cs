@@ -180,12 +180,9 @@ namespace WorkStationAssistant.Lib.Logic
                 Severity = LogLevel.Information
             });
 
-            if (!isBatteryCharging && batteryStatus == BatteryStatus.Charging)
+            if (IsBatteryChargingSessionStartedNewly(batteryStatus))
             {
-                isBatteryCharging = true;
-                lastChargeStartsAt = DateTime.Now;
-                lastChargeStartsAtBatteryLevel = batteryPercentage;
-                chargingSessionId = Guid.NewGuid().ToString(); // new charge session
+                UpdateBatteryChargingStarted(batteryPercentage);
 
                 info.Add(new NotificationMessage()
                 {
@@ -199,13 +196,9 @@ namespace WorkStationAssistant.Lib.Logic
                     Message = lastChargeStartsAtBatteryLevel.ToString()
                 });
             }
-            else if (isBatteryCharging
-                && (batteryStatus != BatteryStatus.Unknown
-                || batteryStatus != BatteryStatus.Charging))
+            else if (IsBatteryChargingSessionCompleted(batteryStatus))
             {
-                isBatteryCharging = false;
-                lastChargeEndsAt = DateTime.Now;
-                chargingSessionId = string.Empty;
+                UpdateBatteryChargingCompleted(batteryPercentage);
 
                 info.Add(new NotificationMessage()
                 {
@@ -218,7 +211,7 @@ namespace WorkStationAssistant.Lib.Logic
                 info.Add(new NotificationMessage()
                 {
                     Title = "Charge Time (h:m:s)",
-                    Message = FormChargingTime(false, lastChargeStartsAt, lastChargeEndsAt)
+                    Message = FormChargingTime(true, lastChargeStartsAt, DateTime.Now)
                 });
 
                 info.Add(new NotificationMessage()
@@ -226,6 +219,68 @@ namespace WorkStationAssistant.Lib.Logic
                     Title = "Charging since battery %",
                     Message = lastChargeStartsAtBatteryLevel.ToString()
                 });
+            }
+        }
+
+        private bool IsBatteryChargingSessionCompleted(BatteryStatus batteryStatus)
+        {
+            if (!isBatteryCharging)
+                return false;
+
+            lock (lockObj)
+            {
+                return isBatteryCharging
+                            && (batteryStatus == BatteryStatus.Discharging
+                            || batteryStatus == BatteryStatus.NoBattery
+                            || batteryStatus == BatteryStatus.Unknown);
+            }
+        }
+
+        private bool IsBatteryChargingSessionStartedNewly(BatteryStatus batteryStatus)
+        {
+            if (isBatteryCharging)
+                return false;
+
+            lock (lockObj)
+            {
+                return !isBatteryCharging && batteryStatus == BatteryStatus.Charging;
+            }
+        }
+
+        private object lockObj = new object();
+
+        private void UpdateBatteryChargingCompleted(int batteryPercentage)
+        {
+            UpdateBatteryStatus(true, false, batteryPercentage);
+        }
+
+        private void UpdateBatteryChargingStarted(int batteryPercentage)
+        {
+            UpdateBatteryStatus(false, true, batteryPercentage);
+        }
+
+        private void UpdateBatteryStatus(bool currentValue, bool batteryCharingNew, int batteryPercentage)
+        {
+            lock (lockObj)
+            {
+                if (this.isBatteryCharging == currentValue)
+                {
+                    this.isBatteryCharging = batteryCharingNew;
+
+                    if (!batteryCharingNew)
+                    {
+                        isBatteryCharging = false;
+                        lastChargeEndsAt = DateTime.Now;
+                        chargingSessionId = string.Empty;
+                    }
+                    else
+                    {
+                        isBatteryCharging = true;
+                        lastChargeStartsAt = DateTime.Now;
+                        lastChargeStartsAtBatteryLevel = batteryPercentage;
+                        chargingSessionId = Guid.NewGuid().ToString(); // new charge session
+                    }
+                }
             }
         }
 
@@ -252,7 +307,7 @@ namespace WorkStationAssistant.Lib.Logic
             if (batteryInfo == null)
                 return false;
 
-            if (IsAnyChangeFound(batteryInfo))
+            if (ShouldSaveData(batteryInfo))
             {
                 lastBatteryItem = batteryInfo;
                 batteryInfo.ChargingSessionId = chargingSessionId;
@@ -262,11 +317,12 @@ namespace WorkStationAssistant.Lib.Logic
             return false;
         }
 
-        private bool IsAnyChangeFound(BatteryDataItem batteryInfo)
+        private bool ShouldSaveData(BatteryDataItem batteryInfo)
         {
             return lastBatteryItem == null
                             || batteryInfo.IsCharging != lastBatteryItem.IsCharging
-                            || batteryInfo.BatteryPercentage != lastBatteryItem.BatteryPercentage;
+                            || batteryInfo.BatteryPercentage != lastBatteryItem.BatteryPercentage
+                            || (batteryInfo.IsCharging && batteryInfo.BatteryPercentage == 100);
         }
     }
 }

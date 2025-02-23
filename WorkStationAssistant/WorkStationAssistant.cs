@@ -19,7 +19,7 @@ namespace WorkStationAssistant
         private const FormWindowState DefaultWindowStatusUponAlerts = FormWindowState.Normal;
         private readonly DeviceMonitorDriver deviceMonitor;
         private bool userForcedClose = false;
-        private bool isShownAutomatically = false;
+        private bool isShownAutomatically = true;
         private readonly BasicProgressBar batteryIndicatorNw = new BasicProgressBar();
         private readonly BasicProgressBar batteryIndicatorLaptop = new BasicProgressBar();
         private readonly LastMessageTracking lastMessageTrackingNw = new LastMessageTracking();

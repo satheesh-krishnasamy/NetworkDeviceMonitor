@@ -80,7 +80,7 @@ namespace WorkStationAssistant.Lib.DAL
                 //if (endDateTime == DateTime.MinValue)
                 //    endDateTime = DateTime.Now;
 
-                command.CommandText = @" SELECT top 1 EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime and IsCharging = 1 order by EventDateTime desc ";
+                command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime AND IsCharging = true order by EventDateTime desc LIMIT 1;";
                 command.Parameters.AddWithValue("$StartTime", startDateTime);
                 command.Parameters.AddWithValue("$EndTime", endDateTime);
 
