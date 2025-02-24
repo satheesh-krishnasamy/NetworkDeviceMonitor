@@ -64,7 +64,8 @@ namespace WorkStationAssistant.Lib.Logic
                     deviceStatus.PowerLineStatus == PowerLineStatus.Online,
                     deviceStatus.PowerLineStatus == PowerLineStatus.Unknown,
                     notifications,
-                    batteryPercentage);
+                    batteryPercentage,
+                    DeviceType.Laptop);
 
                 await SaveLaptopBatteryInfoToDb(deviceStatus);
             }

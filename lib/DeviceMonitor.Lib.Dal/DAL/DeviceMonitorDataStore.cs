@@ -3,9 +3,9 @@ using WorkStationAssistant.Lib.Model.DataStore;
 
 namespace WorkStationAssistant.Lib.DAL
 {
-    public class NetworkDataStore : IDeviceMonitorDataStore
+    public class DeviceMonitorDataStore : IDeviceMonitorDataStore
     {
-        public NetworkDataStore(string connectionString)
+        public DeviceMonitorDataStore(string connectionString)
         {
             this.connectionString = connectionString;
 

@@ -3,12 +3,13 @@ using WorkStationAssistant.Lib.DAL;
 using WorkStationAssistant.Lib.Model;
 using WorkStationAssistant.Lib.Model.DataStore;
 using System.Text;
+using DeviceMonitor.Lib.Shared.Logic;
 
 namespace WorkStationAssistant.Lib.Logic
 {
     public abstract class DeviceMonitorLogicBase
     {
-        private readonly IDeviceMonitorDataStore networkDataStore;
+        private readonly IDeviceMonitorDataStore dataStore;
 
         /// <summary>
         /// Battery level at the time the charging starts.
@@ -36,7 +37,7 @@ namespace WorkStationAssistant.Lib.Logic
 
         protected DeviceMonitorLogicBase(string storeName)
         {
-            this.networkDataStore = new NetworkDataStore("Data Source=" + Path.Combine(Directory.GetCurrentDirectory(), storeName));
+            this.dataStore = new DeviceMonitorDataStore("Data Source=" + Path.Combine(Directory.GetCurrentDirectory(), storeName));
         }
 
         protected async Task InititializeLastSession(bool isCharging)
@@ -52,7 +53,7 @@ namespace WorkStationAssistant.Lib.Logic
             }
 
             var startTimeToDetectLastChargingSession = DateTime.Now.AddMinutes(-15);
-            var lastChargeSessionRecords = await this.networkDataStore.GetLastBatteryChargingSessionsAsync(
+            var lastChargeSessionRecords = await this.dataStore.GetLastBatteryChargingSessionsAsync(
                 startTimeToDetectLastChargingSession,
                 DateTime.Now).ConfigureAwait(false);
 
@@ -74,7 +75,8 @@ namespace WorkStationAssistant.Lib.Logic
             bool isCharging,
             bool noBatteryConnected,
             IList<NotificationMessage> notifications,
-            int batteryPercentage)
+            int batteryPercentage,
+            DeviceType deviceType)
         {
             if (noBatteryConnected)
                 return;
@@ -86,7 +88,7 @@ namespace WorkStationAssistant.Lib.Logic
                     notifications.Add(
                         new NotificationMessage()
                         {
-                            Title = "Laptop is on Low battery. ",
+                            Title = $"{deviceType} is on Low battery. ",
                             Message = batteryPercentage + "%",
                             Severity = LogLevel.Critical,
                             RequiresAttention = true
@@ -97,7 +99,7 @@ namespace WorkStationAssistant.Lib.Logic
                     notifications.Add(
                         new NotificationMessage()
                         {
-                            Title = "Laptop is on Low battery. ",
+                            Title = $"{deviceType} is on Low battery. ",
                             Message = batteryPercentage + "%",
                             Severity = LogLevel.Warning,
                             RequiresAttention = true
@@ -122,7 +124,7 @@ namespace WorkStationAssistant.Lib.Logic
                     notifications.Add(
                         new NotificationMessage()
                         {
-                            Title = "Charging can be stopped for better battery life. ",
+                            Title = $"{deviceType} - Charging can be stopped for better battery life. ",
                             Message = batteryPercentage + "%",
                             Severity = LogLevel.Warning
                         });
@@ -132,7 +134,7 @@ namespace WorkStationAssistant.Lib.Logic
                     notifications.Add(
                         new NotificationMessage()
                         {
-                            Title = "Stop charging. Battery is full.",
+                            Title = $"{deviceType} - Stop charging. Battery is full.",
                             Message = batteryPercentage + "%",
                             Severity = LogLevel.Critical,
                             RequiresAttention = true
@@ -145,7 +147,7 @@ namespace WorkStationAssistant.Lib.Logic
         {
             var minUTCDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            var batteryChargeHostoryData = await networkDataStore
+            var batteryChargeHostoryData = await dataStore
                 .GetAsync(DateTime.Now.AddHours(-6), DateTime.Now);
             StringBuilder dataString = new StringBuilder();
 
@@ -311,7 +313,7 @@ namespace WorkStationAssistant.Lib.Logic
             {
                 lastBatteryItem = batteryInfo;
                 batteryInfo.ChargingSessionId = chargingSessionId;
-                return await this.networkDataStore.SaveAsync(batteryInfo);
+                return await this.dataStore.SaveAsync(batteryInfo);
             }
 
             return false;

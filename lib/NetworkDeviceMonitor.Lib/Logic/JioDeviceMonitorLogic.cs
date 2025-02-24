@@ -172,7 +172,8 @@ namespace WorkStationAssistant.Lib.Logic
                     isCharging,
                     deviceStatus.BatteryPercentage == -100 || deviceStatus.BatteryPercentage < 0,
                     notifications,
-                    deviceStatus.BatteryPercentage);
+                    deviceStatus.BatteryPercentage,
+                    DeviceType.NetworkDevice);
 
             return notifications;
         }
