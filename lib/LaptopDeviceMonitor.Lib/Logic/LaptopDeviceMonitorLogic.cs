@@ -7,15 +7,13 @@ namespace WorkStationAssistant.Lib.Logic
 {
     public class LaptopDeviceMonitorLogic : DeviceMonitorLogicBase, IDeviceMonitorLogic
     {
-        public DeviceType DeviceType => DeviceType.Laptop;
-
         /// <summary>
         /// Constructor - initializes the LaptopDeviceMonitorLogic instance.
         /// </summary>
         /// <param name="config">Notification settings.</param>
         /// 
         public LaptopDeviceMonitorLogic(INotificationConfig config)
-            : base($"laptopdevice_{config.DbVersion}.db")
+            : base($"laptopdevice_{config.DbVersion}.db", DeviceType.Laptop)
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using WorkStationAssistant.Lib.Model;
+﻿using DeviceMonitor.Lib.Dal.DataStore;
+using WorkStationAssistant.Lib.Model;
 
 namespace DeviceMonitor.Lib.Shared.Logic
 {
@@ -11,6 +12,9 @@ namespace DeviceMonitor.Lib.Shared.Logic
         Task<string> GetChartDataAsync();
 
         Task<NotificationModel> GetNotificationsAsync();
+
+        Task<Dictionary<string, string>> GetStatisticsAsync(DateTime start, DateTime end);
+
     }
 
     public enum DeviceType

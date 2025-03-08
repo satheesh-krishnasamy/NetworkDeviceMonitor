@@ -80,6 +80,26 @@ namespace DeviceMonitor.Lib.Shared.Logic
             return notifications;
         }
 
+        public async Task<Dictionary<string, string>> GetStatisticsAsync()
+        {
+            IList<Task<Dictionary<string, string>>> tasks = new List<Task<Dictionary<string, string>>>();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            foreach (var d in deviceMonitors)
+            {
+                tasks.Add(d.GetStatisticsAsync(DateTime.Now.Date, DateTime.Now));
+            }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+            var notifications = tasks.Select(t => t.Result);
+
+            foreach (var d in notifications)
+                foreach (var kv in d)
+                    result[kv.Key] = kv.Value;
+
+            return result;
+        }
+
         public void StarDeviceMonitor()
         {
             if (NotificationEvent != null)

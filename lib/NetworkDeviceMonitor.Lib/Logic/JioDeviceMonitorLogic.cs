@@ -25,8 +25,6 @@ namespace WorkStationAssistant.Lib.Logic
 
         const string jioDeviceStatusUrlFormat = "http://jiofi.local.html/st_dev.w.xml?_={0}";
 
-        public DeviceType DeviceType => DeviceType.NetworkDevice;
-
 
         /// <summary>
         /// Constructor - initializes the JioDeviceMonitorLogic instance.
@@ -34,7 +32,7 @@ namespace WorkStationAssistant.Lib.Logic
         /// <param name="httpClient">Http client to talk to jio API.</param>
         /// <param name="config">Notification settings.</param>
         public JioDeviceMonitorLogic(HttpClient httpClient, INotificationConfig config)
-            : base($"networkdevice_{config.DbVersion}.db")
+            : base($"networkdevice_{config.DbVersion}.db", DeviceType.NetworkDevice)
         {
             this.httpClient = httpClient;
             this.responseSerializer = new XmlSerializer(typeof(StDevResponseRoot));

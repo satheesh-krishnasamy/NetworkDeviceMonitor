@@ -52,6 +52,7 @@
             systemTrayIconClickMenu = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            btnStatistics = new Button();
             tabControl1.SuspendLayout();
             tabNotificationsPage.SuspendLayout();
             grpLaptopInfo.SuspendLayout();
@@ -281,6 +282,17 @@
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
+            // btnStatistics
+            // 
+            btnStatistics.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnStatistics.Location = new Point(398, 252);
+            btnStatistics.Name = "btnStatistics";
+            btnStatistics.Size = new Size(75, 23);
+            btnStatistics.TabIndex = 9;
+            btnStatistics.Text = "Sa&tistics";
+            btnStatistics.UseVisualStyleBackColor = true;
+            btnStatistics.Click += btnStatistics_click;
+            // 
             // WorkStationAssistant
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -290,6 +302,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(654, 300);
             ContextMenuStrip = systemTrayIconClickMenu;
+            Controls.Add(btnStatistics);
             Controls.Add(pnlMessageBox);
             Controls.Add(tabControl1);
             Controls.Add(btnOk);
@@ -344,5 +357,6 @@
         private Panel pnlLaptopBatteryInfo;
         private Label lblLaptopLastStatusChecked;
         private GroupBox grpNetworkInfo;
+        private Button btnStatistics;
     }
 }

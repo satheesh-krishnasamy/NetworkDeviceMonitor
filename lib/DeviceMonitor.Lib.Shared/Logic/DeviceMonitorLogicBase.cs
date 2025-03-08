@@ -35,10 +35,13 @@ namespace WorkStationAssistant.Lib.Logic
 
         private BatteryDataItem lastBatteryItem = null;
 
-        protected DeviceMonitorLogicBase(string storeName)
+        protected DeviceMonitorLogicBase(string storeName, DeviceType deviceType)
         {
             this.dataStore = new DeviceMonitorDataStore("Data Source=" + Path.Combine(Directory.GetCurrentDirectory(), storeName));
+            DeviceType = deviceType;
         }
+
+        public DeviceType DeviceType { get; protected set; }
 
         protected async Task InititializeLastSession(bool isCharging)
         {
@@ -273,7 +276,7 @@ namespace WorkStationAssistant.Lib.Logic
                     {
                         isBatteryCharging = false;
                         lastChargeEndsAt = DateTime.Now;
-                        chargingSessionId = string.Empty;
+                        chargingSessionId = Guid.NewGuid().ToString();
                     }
                     else
                     {
@@ -325,6 +328,22 @@ namespace WorkStationAssistant.Lib.Logic
                             || batteryInfo.IsCharging != lastBatteryItem.IsCharging
                             || batteryInfo.BatteryPercentage != lastBatteryItem.BatteryPercentage
                             || (batteryInfo.IsCharging && batteryInfo.BatteryPercentage == 100);
+        }
+
+        public async Task<Dictionary<string, string>> GetStatisticsAsync(DateTime start, DateTime end)
+        {
+            var d = new Dictionary<string, string>();
+            var dbResult = await this.dataStore.GetBatteryStatisticsAsync(start, end);
+            if (dbResult != null && dbResult.Any())
+            {
+                var totalChargeCycles = dbResult.GroupBy(c => c.EndedDateTime.Date);
+                foreach (var chargeCycle in totalChargeCycles)
+                {
+                    d.Add($"{this.DeviceType} - Total charges on [{chargeCycle.Key}]", chargeCycle?.Count().ToString());
+                }
+            }
+
+            return d;
         }
     }
 }

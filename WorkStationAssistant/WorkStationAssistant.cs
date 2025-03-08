@@ -435,5 +435,26 @@ namespace WorkStationAssistant
         {
             await ShowBatteryStatusTrendChart(DeviceType.Laptop);
         }
+
+        private async void btnStatistics_click(object sender, EventArgs e)
+        {
+            try
+            {
+                var msgs = await deviceMonitor.GetStatisticsAsync();
+                if (msgs != null && msgs.Any())
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var msg in msgs)
+                    {
+                        sb.Append(msg.Key).Append(" : ").AppendLine(msg.Value);
+                    }
+                    MessageBox.Show(sb.ToString(), "Statistics");
+                }
+            }
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.ToString());
+            }
+        }
     }
 }

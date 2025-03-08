@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DeviceMonitor.Lib.Dal.DataStore;
+using Microsoft.Data.Sqlite;
 using WorkStationAssistant.Lib.Model.DataStore;
 
 namespace WorkStationAssistant.Lib.DAL
@@ -38,11 +39,6 @@ namespace WorkStationAssistant.Lib.DAL
                 connection.Open();
 
                 var command = connection.CreateCommand();
-
-                //if (startDateTime == DateTime.MinValue)
-                //    startDateTime = DateTime.Now.Date.AddYears(-1);
-                //if (endDateTime == DateTime.MinValue)
-                //    endDateTime = DateTime.Now;
 
                 command.CommandText = @" SELECT EventDateTime, BatteryPercentage, IsCharging, SessionId FROM BatteryData WHERE EventDateTime >= $StartTime AND EventDateTime <= $EndTime";
                 command.Parameters.AddWithValue("$StartTime", startDateTime);
@@ -138,6 +134,52 @@ namespace WorkStationAssistant.Lib.DAL
                         record.IsCharging = reader.GetBoolean(2);
                         record.ChargingSessionId = reader.GetString(3);
 
+                        result.Add(record);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<BatteryStatistics>> GetBatteryStatisticsAsync(
+            DateTime startDateTime,
+            DateTime endDateTime)
+        {
+            List<BatteryStatistics> result = new List<BatteryStatistics>();
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = connection.CreateCommand();
+
+
+                command.CommandText = @" select 
+	                                        SessionId,
+	                                        min(EventDateTime) as Started, 
+	                                        max(EventDateTime) as Ended,
+	                                        Min(BatteryPercentage) as StartPercentage,
+	                                        max(BatteryPercentage) as EndPercentage
+                                        from
+                                        BatteryData
+                                        where EventDateTime >= $StartTime 
+                                        --and EventDateTime <= $EndTime 
+                                        and IsCharging = true and SessionId <> ''
+                                        group by SessionId;";
+                command.Parameters.AddWithValue("$StartTime", startDateTime);
+                // command.Parameters.AddWithValue("$EndTime", endDateTime);
+
+                
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        var record = new BatteryStatistics();
+                        record.SessionId = reader.GetString(0);
+                        record.StartedDateTime = reader.GetDateTime(1);
+                        record.EndedDateTime = reader.GetDateTime(2);
+                        record.StartPercentage = reader.GetInt32(3);
+                        record.EndPercentage= reader.GetInt32(4);
                         result.Add(record);
                     }
                 }

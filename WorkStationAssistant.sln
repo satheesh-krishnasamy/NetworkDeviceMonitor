@@ -17,6 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkStationAssistant", "Wor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkDeviceMonitor.Lib", "lib\NetworkDeviceMonitor.Lib\NetworkDeviceMonitor.Lib.csproj", "{6CB90D91-0839-491D-AE76-E6E716E32C4C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql_scripts", "sql_scripts", "{BFC74217-E104-4335-BA00-53A0642FA9BA}"
+	ProjectSection(SolutionItems) = preProject
+		sql_scripts\get_battery_statistics.sql = sql_scripts\get_battery_statistics.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
