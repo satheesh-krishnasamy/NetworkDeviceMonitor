@@ -1,8 +1,11 @@
-# NetworkDeviceMonitor
-This app does the following by periodically monitoring the device. 
-1. shows battery status
-2. alerts on low battery < 15%
-3. alerts when its 100% charged.
+# Workstation and network device battery level monitor
+This app does the following by periodically monitoring the devices (laptop and jio network device). 
+1. Shows battery level and charging status
+2. Alerts on low battery level < 20%
+3. Warns to disconect charger when the battery level is >= 80
+4. Alerts when its 100% charged.
+5. Shows the battery draining/charging trend as a chart.
+6. Shows the no.of time the battery has charged on each day for the past 7 days.
 
 ## Purpose
 1. You can connect charger before the device goes off; this is helpful when you focus on work or meeting without worrying about device's battery status.
